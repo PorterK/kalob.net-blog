@@ -1,0 +1,87 @@
+# What are web sockets used for?
+
+The most common uses for web sockets fall into a couple of different categories.
+
+- Updating a browser client with new data in real-time.
+  - Chat service
+  - Data model updates
+
+- Communication between microservices
+  - An internal service needs to work on some task, then push the data out in real-time
+
+----
+
+# [Socket.IO](https://socket.io)
+
+Socket.IO is the premier socket libarary for Node.js development, although it is used in many languages.
+
+> Socket.IO enables real-time, bidirectional and event-based communication.
+> It works on every platform, browser or device, focusing equally on reliability and speed.
+
+### Fun Fact
+
+Socket.IO doesn't actually use web sockets! [Read about it.](https://www.educba.com/websocket-vs-socket-io/)
+
+### Pros
+
+- Very easy to setup
+- Great documentation
+- Fast
+- Reliable
+- Channels/rooms setup
+
+### Cons
+
+- Not easy to scale
+- Doesn't use web sockets
+  - Harder to debug
+
+
+### My Thoughts
+
+Overall, Socket.IO is a great real-time communication library. It is the first library I go to for fast setup and ease of use. If you just want to play around with sockets, or if your implementation is simple, Socket.IO is a great, easy, choice.
+
+----
+
+# [Socket Cluster](https://socketcluster.io/)
+
+Socket Cluster is the scalabale socket solution.
+
+> Highly scalable realtime framework optimized for async/await
+
+### Fun Fact
+
+Socket Cluster is built to run on Kubernetes
+
+### Pros
+
+- Simple subscription model
+- Extremely easy to scale
+- Easy setup with Docker
+- Dev-ops-first focus
+- Comes with built in RPC
+
+### Cons
+
+- Documentation can be hard to read
+- Requires a minimum of 3 running servers (state, broker, worker)
+- Hard to use without Docker
+- No concept of rooms - channels exist though.
+
+### My Thoughts
+
+Socket Cluster has been my most recent go-to for real time communication. The framework is easy to get running on Docker, and just simply works. The library forces for-await-of loops which can be cumbersome and exists outside of many style guides.
+
+----
+
+# The Bottom Line
+
+Socket.IO is great to get started with, but doesn't provide a great experince when it comes to deployment/scaling. [Their scaling guide](https://socket.io/docs/using-multiple-nodes/) is fairly incomplete, requires setting up Redis, and using sticky load balancing, which can turn off a lot of developers.
+I prefer the ease of scaling that Socket Cluster provides, and once you get past the initial setup, it is an absolute breeze. Need another worker node? Just create one. The state and broker servers will handle the rest.
+However, Socket Cluster can become a headache in your code base if you aren't intentional about abstracting some of the sloppier pieces of code that it encourages you to write.
+
+----
+
+> ##
+
+>Thanks for reading! For more content, or for any questions or comments, please reach out to me via [Twitter](https://twitter.com/porter_kalob)

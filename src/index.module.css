@@ -49,3 +49,7 @@
   margin-top: 0;
   margin-bottom: 1.75rem;
 }
+
+:global hr {
+  background-color: #f3f3f3 !important;
+}
