@@ -3,6 +3,7 @@ import * as Navi from 'navi'
 import { join } from 'path'
 import { sortBy } from 'lodash'
 import slugify from 'slugify'
+import React from 'react';
 
 // Get a list of all posts, that will not be loaded until the user
 // requests them.
@@ -74,6 +75,16 @@ let posts = postDetails.map(({ slug, pathname, date }, i) => ({
         let { default: MDXComponent, ...other } = await getContent()
         return { MDXComponent, ...other }
       },
+      head: (
+        <>
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@porter_kalob" />
+          <meta name="twitter:creator" content="@porter_kalob" />
+          <meta name="twitter:title" content={title} />
+          <meta name="twitter:description" content={meta.spoiler} />
+          <meta name="twitter:image:src" content={`https://blog.kalob.net${meta.cardImage}`} />
+        </>
+      ),
     })
   }),
   slug,
