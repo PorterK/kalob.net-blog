@@ -192,3 +192,9 @@
 .content :global(.token.namespace) {
   color: rgb(178, 204, 214);
 }
+
+img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}

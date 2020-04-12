@@ -1,4 +1,4 @@
-import Card from './Card.png';
+import Card from './card.png';
 
 export default {
   title: `Socket.IO vs Socket Cluster`,

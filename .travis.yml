@@ -1,0 +1,27 @@
+language: node_js
+sudo: required
+node_js:
+- '13'
+branches:
+  only:
+  - master
+cache:
+  yarn: true
+install:
+- yarn global add travis-ci-cloudfront-invalidation
+- yarn install
+script: yarn build
+deploy:
+  provider: s3
+  access_key_id: AKIAQA7PB7JLLRE6IYGC
+  secret_access_key:
+    secure: ViQRX3hVObFuZg6YJWCOhIizmZDfEivFOL5IO8XGyew7xdiliTOmR+AOtaBok2reusq2RAY2WYEVX5VeoRwaGNvmlOhnvK+vCGHppHKReUrwwjfrW9c7zOHwUGyXsTvMKqPicB/KSSpJA8qW2UVkDGhninzCqGvf7Wj6yumy6juXVanBD3Ix4N4A/z685A6luAa5C7qlOhnlM/U6B+YsIuq+Gq0hJhkLTdmiZpq2Nh5yMM8ikvVVQPhBsOHHl84rGgL/pQYcw2LBgEt+2Yptgo+ZVRgsenG1eHrKxNIFz7roC28Xkvi7Ii4J7P12bZEx6k4+2RpLQeZSA4W1p04Np6+e3JsFmJBRt9uM0TQ0K5t5DJZAm0sYkYFGbOdpzeZ9J0ZP56hNkpmDUgIsh8jL4b7FPgQPc7m/Ht5k6MPOzmbRdPC1x5KnT2Qw930WnngGEwNi0YSzPjk6+vwmM1IrJgzr+2K+gvfMENEn+tX4NRhFi7jPZEnTkQrIToBO7F6AmkNhj9MPBh2YJeDDGGf/vW/GlIKW/MTU6POQ2deCNO3cOyBv8rtUlAML7M+Ge3FGq5JQTzc+8bqr/Xxlt6TuztFlS33+0W8uXiqSxZSR1jowXeYLzullZntZTJHL+2mipNgEre7cJNE3PlxL1bImKaUyooopykS3rcd+itUc+lo=
+  bucket: kalob.net-blog
+  skip_cleanup: true
+  local-dir: build
+  acl: public_read
+  region: us-east-2
+  on:
+    repo: PorterK/kalob.net-blog
+after_deploy:
+- travis-ci-cloudfront-invalidation -a $AWS_CLOUDFRONT_ACCESS_KEY -s $AWS_CLOUDFRONT_SECRET -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
