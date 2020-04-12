@@ -131,6 +131,12 @@ after_deploy:
   - travis-ci-cloudfront-invalidation -a $AWS_CLOUDFRONT_ACCESS_KEY -s $AWS_CLOUDFRONT_SECRET -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
 ```
 
+Also, under `install` add:
+
+```
+- yarn global add travis-ci-cloudfront-invalidation
+```
+
 We will need to add `AWS_CLOUDFRONT_ACCESS_KEY` `AWS_CLOUDFRONT_SECRET` and `AWS_CLOUDFRONT_DIST_ID` as environment variables in Travis.
 
 For this step, you should follow Step 3 to create another user, but choose `CloudFrontFullAccess` for the permission set.
