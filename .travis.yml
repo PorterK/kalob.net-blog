@@ -1,7 +1,7 @@
 language: node_js
 sudo: required
 node_js:
-- '11.15.0'
+- 11.15.0
 branches:
   only:
   - master
@@ -15,7 +15,7 @@ deploy:
   provider: s3
   access_key_id: AKIAQA7PB7JLLRE6IYGC
   secret_access_key:
-    secure: ViQRX3hVObFuZg6YJWCOhIizmZDfEivFOL5IO8XGyew7xdiliTOmR+AOtaBok2reusq2RAY2WYEVX5VeoRwaGNvmlOhnvK+vCGHppHKReUrwwjfrW9c7zOHwUGyXsTvMKqPicB/KSSpJA8qW2UVkDGhninzCqGvf7Wj6yumy6juXVanBD3Ix4N4A/z685A6luAa5C7qlOhnlM/U6B+YsIuq+Gq0hJhkLTdmiZpq2Nh5yMM8ikvVVQPhBsOHHl84rGgL/pQYcw2LBgEt+2Yptgo+ZVRgsenG1eHrKxNIFz7roC28Xkvi7Ii4J7P12bZEx6k4+2RpLQeZSA4W1p04Np6+e3JsFmJBRt9uM0TQ0K5t5DJZAm0sYkYFGbOdpzeZ9J0ZP56hNkpmDUgIsh8jL4b7FPgQPc7m/Ht5k6MPOzmbRdPC1x5KnT2Qw930WnngGEwNi0YSzPjk6+vwmM1IrJgzr+2K+gvfMENEn+tX4NRhFi7jPZEnTkQrIToBO7F6AmkNhj9MPBh2YJeDDGGf/vW/GlIKW/MTU6POQ2deCNO3cOyBv8rtUlAML7M+Ge3FGq5JQTzc+8bqr/Xxlt6TuztFlS33+0W8uXiqSxZSR1jowXeYLzullZntZTJHL+2mipNgEre7cJNE3PlxL1bImKaUyooopykS3rcd+itUc+lo=
+    secure: smHXVuDhrMaq7YWL/XEdh/vIBrnz62W/jS7OTG0BYg/+9PdqoroK2IS2ZUQ48kFsIviBp+KsbY3BkGkjerodtH21YkrROQFNk7JfXr5QFmUohQWa14rWD0UueIeGRnTGlhXHOTAVVsi/nm9rbhYxh9lby/YK/NT9d4pLuW5oyER0fdN49hmYGtwRD3c66SuLvFU7SlBpuicHRol8Dvnwd6Brb81Ie41YubacZdwbsh1e6ECfnwviGeCmNCuVSYLnKiYPmTQbRbIu2F82sgvcdRr7iZ/nt62ZsDMWpuPR1CpiZ+e8x8EEkySHqh9L3twE8Pzjg3m4PcUN8uTilmpSCT+adJJI9hhjyLBwUwEmiuHTMyXXd7G+9pJ5mtl1d0jL5lxPzIAziKUy+e1aoknhfNOXwig6gDlrbIWhGoAus83teLeUlOnXz9sVSg49AGycZHHWgZ0LZIT8RhwTTu/cnHnqc55BAAJ3nJfY3DgFWzEzvaVeYejslkS0H/SBPG3ADkbHJv22SZnU19S/abKXWpJE1PaDg7qdMCZbmPXOfWA5pJgMxdPzXbgPIvAVEod5wLmrTJK+YF4/UFiL3PPSYN8KAI/7PGPIh55aS4Y1x/coQ6QjISX+Djx+W53+MeFJxjgw1zArmHHxFuCFe7bOplNxmk/CXvzqz+M0Dz2h1ss=
   bucket: kalob.net-blog
   skip_cleanup: true
   local-dir: build
@@ -24,4 +24,5 @@ deploy:
   on:
     repo: PorterK/kalob.net-blog
 after_deploy:
-- travis-ci-cloudfront-invalidation -a $AWS_CLOUDFRONT_ACCESS_KEY -s $AWS_CLOUDFRONT_SECRET -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
+- travis-ci-cloudfront-invalidation -a $AWS_CLOUDFRONT_ACCESS_KEY -s $AWS_CLOUDFRONT_SECRET
+  -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
