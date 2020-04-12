@@ -13,9 +13,8 @@ install:
 script: yarn build
 deploy:
   provider: s3
-  access_key_id: AKIAQA7PB7JLLRE6IYGC
-  secret_access_key:
-    secure: smHXVuDhrMaq7YWL/XEdh/vIBrnz62W/jS7OTG0BYg/+9PdqoroK2IS2ZUQ48kFsIviBp+KsbY3BkGkjerodtH21YkrROQFNk7JfXr5QFmUohQWa14rWD0UueIeGRnTGlhXHOTAVVsi/nm9rbhYxh9lby/YK/NT9d4pLuW5oyER0fdN49hmYGtwRD3c66SuLvFU7SlBpuicHRol8Dvnwd6Brb81Ie41YubacZdwbsh1e6ECfnwviGeCmNCuVSYLnKiYPmTQbRbIu2F82sgvcdRr7iZ/nt62ZsDMWpuPR1CpiZ+e8x8EEkySHqh9L3twE8Pzjg3m4PcUN8uTilmpSCT+adJJI9hhjyLBwUwEmiuHTMyXXd7G+9pJ5mtl1d0jL5lxPzIAziKUy+e1aoknhfNOXwig6gDlrbIWhGoAus83teLeUlOnXz9sVSg49AGycZHHWgZ0LZIT8RhwTTu/cnHnqc55BAAJ3nJfY3DgFWzEzvaVeYejslkS0H/SBPG3ADkbHJv22SZnU19S/abKXWpJE1PaDg7qdMCZbmPXOfWA5pJgMxdPzXbgPIvAVEod5wLmrTJK+YF4/UFiL3PPSYN8KAI/7PGPIh55aS4Y1x/coQ6QjISX+Djx+W53+MeFJxjgw1zArmHHxFuCFe7bOplNxmk/CXvzqz+M0Dz2h1ss=
+  access_key_id: $AWS_S3_ACCESS_KEY
+  secret_access_key: $AWS_S3_SECRET_KEY
   bucket: kalob.net-blog
   skip_cleanup: true
   local-dir: build
@@ -26,3 +25,6 @@ deploy:
 after_deploy:
 - travis-ci-cloudfront-invalidation -a $AWS_CLOUDFRONT_ACCESS_KEY -s $AWS_CLOUDFRONT_SECRET
   -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
+env:
+  global:
+    secure: y9ntZfaWYHJGj8pEyGQ6jBurP2u1U1EyD/G16cEOcUgQqaJUwg7p5zauvX6bZUB80RdRmoS4niIygp+eNuMW3oJYtqa5d6CaNkcFKl+yJ0zpjJvx0YgHbNuSEaQ3ffGLf6HppjVmmlJ5YkmVinvXVD34zHjvSiEDZz8n3KevX9THCDP3nyUWI/IMjWnYJfkFQg3q0wsVz+D+oXR/hz/FczeCyxiCySe3WShTWVa2/ADysXvaTajDifd76iPbHpvzEyLZM51eiMNA8o0tQ3b+k2is7eILutv+s06VwUpXSbA5Anr8U4FJlFY/cDJfxX4aoVPn4wtGk7K7LxD/jCvXdDrvwMxb34BmwucUORf6a130DUu5OOVYDMuW5OzAGr1wBNGQErYZCy1eJgz0ltO/iUfL1GbD8HtFS56CE0LtHr/l5RPI9FyXJu34lP95tHJ0FgfSvCFrC+6a1FvUrDn9voALHJ4bv88urp5Br7/MODEliK8V2GuqTLpEYsJlGcEdMD4ij4OFhiVmpJLB+XBp5tO9FDh3VTIPV+HPyJ0Y0ze+fRgukN3dblxgPDPw/IfPRFgNVL11rzAv9PTtnDBvHZbUKfltcFHsjmUibP0XQXtW9RNNoPzDE1mHwOnvQBc5cbHUuTpvfHnOnETiPh72iy05OmWK1HB8bcN5Jssaltc=
