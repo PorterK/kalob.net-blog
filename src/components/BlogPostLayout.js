@@ -1,15 +1,20 @@
 import React from 'react'
 import { Link, useCurrentRoute, useView } from 'react-navi'
 import { MDXProvider } from '@mdx-js/react'
+import ReactGA from 'react-ga';
+
 import siteMetadata from '../siteMetadata'
 import ArticleMeta from './ArticleMeta'
 import Bio from './Bio'
 import styles from './BlogPostLayout.module.css'
 
 function BlogPostLayout({ blogRoot }) {
-  let { title, data, url } = useCurrentRoute()
+  let { title, data, url, slug, pathname } = useCurrentRoute()
   let { connect, content, head } = useView()
   let { MDXComponent, readingTime } = content
+
+  ReactGA.set({ path: pathname });
+  ReactGA.pageview(slug);
 
   // The content for posts is an MDX component, so we'll need
   // to use <MDXProvider> to ensure that links are rendered

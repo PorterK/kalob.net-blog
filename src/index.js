@@ -4,6 +4,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Router } from "react-navi";
 import HelmetProvider from "react-navi-helmet-async";
+import ReactGA from 'react-ga';
+
 import "./index.module.css";
 import routes from "./routes";
 import * as serviceWorker from "./serviceWorker";
@@ -19,6 +21,8 @@ register({
   // This will only be called when loading your app in the browser. It won't
   // be called when performing static generation.
   async main() {
+    ReactGA.initialize('UA-132881633-2');
+
     let navigation = createBrowserNavigation({ routes });
 
     // Wait until the navigation has loaded the page's content, or failed to do
