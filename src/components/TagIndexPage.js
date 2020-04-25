@@ -1,8 +1,12 @@
 import React from 'react'
 import { Link } from 'react-navi'
 import styles from './TagIndexPage.module.css'
+import ReactGA from 'react-ga';
 
 function TagIndexPage(props) {
+  ReactGA.set({ path: '/tags' });
+  ReactGA.pageview('tags');
+
   return (
     <div className={styles.TagIndexPage}>
       <h1>Tags</h1>

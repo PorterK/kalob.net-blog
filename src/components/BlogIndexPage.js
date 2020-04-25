@@ -5,8 +5,12 @@ import ArticleSummary from './ArticleSummary'
 import Bio from './Bio'
 import Pagination from './Pagination'
 import styles from './BlogIndexPage.module.css'
+import ReactGA from 'react-ga';
 
 function BlogIndexPage({ blogRoot, pageCount, pageNumber, postRoutes }) {
+  ReactGA.set({ path: '/' });
+  ReactGA.pageview('index');
+
   return (
     <div>
       <header>
