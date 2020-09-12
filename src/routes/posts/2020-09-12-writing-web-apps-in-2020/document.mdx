@@ -1,0 +1,87 @@
+I think it goes without saying that 2020 has been an incredibly trying year for everyone. From the ever-present COVID-19 pandemic, to riots during BLM protests,
+to raging wildfires across the USA. The least interesting things to happen this year -- murder hornets being found in North Amera, and oil prices going negative,
+are still extreme in comparison to most years. The country is more divided than ever with Joe Biden and Donald Trump going head to head in an election that is
+sure to disappoint no matter the outcome. Politics and bipartisanship are displayed in a way that the world has never seen before.
+
+Anyways, this is a tech blog, so I'll skip the obligatory "nothing will ever be the same" spiel.
+
+2020 has been a transformative year for me in the way that I look at technology. I've spent more time than ever looking at architecture and learning from mistakes
+on past projects. Here are the top 5 things that I've taken away from all of the learning I've done this year.
+
+*Note: I work on startups every day, so some of these are going to be related to the early stages of a codebase.*
+
+# 1 - Write less code.
+
+This one shouldn't come as a shock. As the old saying goes "[the best code is no code at all](https://blog.codinghorror.com/the-best-code-is-no-code-at-all/)". Even
+though I've known this truth for the duration of my career, I've never really taken it to heart. I've fallen victim to spaghetti for the sake of a deadline too often.
+This year, I really made it a goal to think through every line of code that I write, and come up with a plan for how its existence is justified by its contribution to the
+greater program. Writing less code has enabled my applications to have better, more consistent, functionality with less lines of code, requiring less code coverage.
+
+I wish I had taken this to heart earlier in my career. However, I don't think I would have had the experience to do so.
+
+# 2 - Complicated dev ops will kill productivity.
+
+This one is a real stinger for me. I definitely fell into the "I know Kubernetes so we should use it for everything" trap early on in my career. Although I wasn't the person
+directly responsible for implementing Kubernetes across our companies at DT Starts, I definitely didn't question it. It has been a constant headache for some of our companies
+that are not ready for that kind of setup. This one architecture decision has cost us hundreds of hours of work just maintaining systems, sometimes for servers that aren't
+even in use. This became especially apparent with one of our companies where the Kubernetes setup was working strictly because we had it on a server that exceeded our peaks.
+As soon as we started hitting the upper-edge of what our servers can handle during traffic spikes, many issues popped up. The kind of issues that meant I had to spend dozens of
+hours over the course of several weeks just to make sure the servers didn't crash.
+
+After having this experience, we moved a lot of companies from Azure DevOps to Github, switched to Github actions instead of using a dedicated build agent, and moved towards
+using a solution like Amazon ECS instead of Kubernetes, where we don't have to maintain the cluster ourselves. The truth is, none of our companies require a specialized enough
+setup to even use Kubernetes, but the migration is still incomplete.
+
+# 3 - If the codebase is hard to work in, start the rewrite immediately.
+
+This one kind of happened in 2019, but has bled into 2020 quite a bit. At DT Starts we had a single develop codebase that was extremely complicated - and, frankly, poorly written.
+When we started to throw more resources into this codebase, it became apparent immediately that we had to do a whole lot of work to get it to a spot where we could start adding
+new features. This codebase definitely had job security syndrome.
+
+> ### Job Security Syndrome -
+>
+> When a codebase is intentionally, and exceedingly, complicated as to inflate ones ego & ensure that no one will ever be able
+> to easily replace the developer in the codebase.
+
+So for a few months we tried to salvage what was there, and we eventually decided to rewrite the codebase. This rewrite has been in progress for 6 months (the initial codebase was
+around 2 years old) and we have more functionality with somewhere between 5,000 and 10,000 less lines of code.
+
+In hindsight, we should have started the rewrite immediately after our initial evaluation of the codebase. But as they say, hindsight is 20/20. (ba-doom-chhh)
+
+# 4 - Become a full time student.
+
+Kind of rich coming from someone who is a college drop-out, I know. This has changed my perspective on programming in so many ways, and this one has been one of the easiest and
+most enjoyable additions to my routine.
+
+Pretty much this is it:
+
+- I listen to 1-3 talks from tech conferences every week.
+- I read 1-2 chapters of a programming related book every week.
+- I experiment with 1 new technology, framework, or programming language, every month.
+
+You could scale the routine up pretty easily to match your lifestyle, but I am a man of many hobbies and I struggle to find time for more than that. I've only recently taken this
+up, but I can already tell a big difference in how I approach problems with other perspectives in mind.
+
+The biggest advantage I've found from doing this is applying patterns widely known in other areas of development to what we do on the web. I've applied event loop design that
+exists on most operating systems to a backend service, data management from another popular framework to React/Redux. I've gotten the "wow, did you come up with this?" several
+times because different segments of programming are sometimes so scope-specific that knowledge isn't transferred between the niches.
+
+# 5 - Talk less, smile more.
+
+The famous quote from Hamilton actually has improved my career in several ways. In the show, Arron Burr is famously a fence-sitter and never reveals his true feelings so to
+not reveal his position. This is something a lot of us fall into as developers, and it is definitely not what I am advocating for. The big revelation for me has been in winding
+down my passion for a specific idea until it is truly necessary. Perviously, I would argue until I was blue in the face for stuff that even if I really didn't know it was the
+write answer or not. That part of me has changed over time. I will still argue for my ideas, and I will definitely not give ground if I truly think I have the right answer.
+However, I am now willing to listen to ideas all the way through before I bring up any issues. The reasoning behind this nuanced shift has to do with the fact that most of
+the time, my idea actually wasn't very far from the idea I was arguing against. After several multi-hour meetings where we ended it by saying "Ok, we are going with the original
+idea, but shifted here", I realized that I was actually the one wasting time by arguing so passionately at the wrong times.
+
+----
+
+I sincerely hope you learned something from this, and if you have any suggestions, comments, or corrections, you can find my Twitter below.
+
+----
+
+> ##
+
+>Thanks for reading! For more content, or for any questions or comments, please reach out to me via [Twitter](https://twitter.com/porter_kalob)
