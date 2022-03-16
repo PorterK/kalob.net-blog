@@ -14,9 +14,9 @@ jobs:
         with: 
           node-version: '16.x'
       - name: Install dependencies
-        run: yarn ci
+        run: npm ci
       - name: Compile project
-        run: yarn build
+        run: npm run build
       - name: sync
         run: aws s3 sync --acl public-read ./build s3://${{ secrets.S3_BUCKET_NAME }}
         env:
