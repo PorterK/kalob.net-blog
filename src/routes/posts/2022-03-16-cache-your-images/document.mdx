@@ -1,15 +1,15 @@
-For the last 6 months I've been helping [Lumatic](https://lumaticimagery.com) work on their web platform. After adjusting some of
+For the last 6 months I've been helping a company work on their web platform. After adjusting some of
 the dev processes, switching them from an internally managed Kubernetes cluster to EKS, I spent some time looking at how the user
 experience could be futher optimized. The setup I landed on ended up making load times up to 10x faster (further analysis later).
 
 ## The Problem
 
-[Lumatic](https://lumaticimagery.com) is all about photos - they offer services to make every part of photography easier & better
+The company is all about photos - they offer services to make every part of photography easier & better
 for a wide range of businesses and groups. At the core of this mission is an image hosting platform where users can view their
 photos.
 
-At Lumatic we've always used signed S3 URLs to view photos securely stored in the various buckets from which we serve photos. Due to some
-of the specific security concerns at Lumatic, we only give the users a URL that's valid for anywhere between 5 minutes and an hour. It's
+We've always used signed S3 URLs to view photos securely stored in the various buckets from which we serve photos. Due to some
+of the specific security concerns at this company, we only give the users a URL that's valid for anywhere between 5 minutes and an hour. It's
 worth mentioning that we didn't have any form of cacheing at this point on those URLs, so each request is a new URL at this point.
 
 The problem now presents itself - galleries with lots of photos take a long time to load directly from S3. As the platform grew,
@@ -94,7 +94,7 @@ locally?
 [MKCert](https://mkcert.org/) will create a local CA & allow us to issue ourselves a certificate for local development. All we
 need to do then is update `/etc/hosts` to point our domain at localhost & update the project to use our certificates.
 
-In order to make this easy I wrote a script that puts the SSL cert in a known location `~/.lumatic/cert` on each
+In order to make this easy I wrote a script that puts the SSL cert in a known location `~/.company_name/cert` on each
 machine so that I can update the locally running [nginx](https://nginx.org/en/) instance and [webpack-dev-server](https://webpack.js.org/configuration/dev-server/)
 to use the certificates we just generated.
 
