@@ -1,0 +1,113 @@
+For the last 6 months I've been helping [Lumatic](https://lumaticimagery.com) work on their web platform. After adjusting some of
+the dev processes, switching them from an internally managed Kubernetes cluster to EKS, I spent some time looking at how the user
+experience could be futher optimized. The setup I landed on ended up making load times up to 10x faster (further analysis later).
+
+## The Problem
+
+[Lumatic](https://lumaticimagery.com) is all about photos - they offer services to make every part of photography easier & better
+for a wide range of businesses and groups. At the core of this mission is an image hosting platform where users can view their
+photos.
+
+At Lumatic we've always used signed S3 URLs to view photos securely stored in the various buckets from which we serve photos. Due to some
+of the specific security concerns at Lumatic, we only give the users a URL that's valid for anywhere between 5 minutes and an hour. It's
+worth mentioning that we didn't have any form of cacheing at this point on those URLs, so each request is a new URL at this point.
+
+The problem now presents itself - galleries with lots of photos take a long time to load directly from S3. As the platform grew,
+even galleries with a few photos started to take a long time to load.
+
+---
+
+## The Solution
+
+My initial thought was to start doing the easiest & most obvious thing - the S3 URLs weren't cacheing in the browser level
+cache because the URL changes every time; we should start to resend the same URLs for each request within a specific window.
+
+While that seems practical there are several issues with it:
+
+- Users who caught the end of the window would pontentially see broken images if the actual image wasn't rendered before the link
+expired.
+- We would have to implement a system to re-use photo URLs which would add at least 1 more hop to the request to see a gallery
+- Browser level cache would still be busted after the window to view a photo has passed, so this solution only really helps a user
+who is clicking between galleries in a single session.
+
+Signed cookies to the rescue!
+
+I knew from the onset that I wanted to introduce a CDN to the equasion to improve compression and speed to parts of the US outside
+of our S3 region. I've been in some projects recently that use Fastly, which has some amazing features for image serving built in
+but implementing the security piece. However, images only being a available from sessions we authenticate wasn't straight forward. Due
+to this & some other things I decided against using Fastly. I ended up going with [CloudFront](https://aws.amazon.com/cloudfront/), which has an awesome feature for this
+specific use case: signed cookies.
+
+---
+
+## Implementing CloudFront Signed Cookies
+
+Implementing Signed Cookies is pretty straight forward on the server side, after setting up the CloudFront bucket. Although I
+didn't want to setup [Lambda@Edge](https://aws.amazon.com/lambda/edge/) at this time, I followed
+[this article](https://aws.amazon.com/blogs/networking-and-content-delivery/signed-cookie-based-authentication-with-amazon-cloudfront-and-aws-lambdaedge-part-1-authentication/)
+to setup the CloudFront distribution.
+
+After the distribution is setup, the code on the server side is pretty simple. The AWS SDK has a built in method to do it:
+
+```js
+const signer = AWS.CloudFront.Signer(
+  process.env.CLOUDFRONT_SIGNER_NAME,
+  process.env.CLOUDFRONT_SIGNER_KEY
+);
+
+const cookies = signer.getSignedCookie({
+  policy: JSON.stringify({
+    Statement: [
+      {
+        Resource: `${process.env.CLOUDFRONT_URL}/*`,
+        Condition: { DateLessThan: { 'AWS:EpochTime': Date.now() + (1 * Days) } },
+      },
+    ],
+  }),
+);
+
+Object.entries(cookies).map(([cookieName, cookieValue]) =>
+  res.header('Set-Cookie', `${cookieName}=${cookieValue}; Path=/; Domain=.domain.com; Secure; HttpOnly`)
+);
+```
+
+With the above code, you're done! If you do this, then send the link from the [CloudFront](https://aws.amazon.com/cloudfront/) distribution you're all done!
+
+On the client it was pretty easy - we use [axios](https://axios-http.com/) to make all of the client requests, so all we had to do
+was add `withCredentials: true`.
+
+And then just like that we have signed cookies!
+
+*Except* for a few caveats:
+
+- In order to get this to work properly you have to assign the cookie from the same domain as the [CloudFront](https://aws.amazon.com/cloudfront/) distribution
+- Meaning, in a normal environment you should setup a custom domain & add it as a CNAME in [CloudFront](https://aws.amazon.com/cloudfront/)
+- In order for the browser to actually set the cookie, you have to also recieve the cookie on the same domain it is sent from
+
+The last point presents an interesting issue - we usually use `localhost` for development. How are we going to be able to work
+locally?
+
+---
+
+## Setting up the local environment
+
+[MKCert](https://mkcert.org/) will create a local CA & allow us to issue ourselves a certificate for local development. All we
+need to do then is update `/etc/hosts` to point our domain at localhost & update the project to use our certificates.
+
+In order to make this easy I wrote a script that puts the SSL cert in a known location `~/.lumatic/cert` on each
+machine so that I can update the locally running [nginx](https://nginx.org/en/) instance and [webpack-dev-server](https://webpack.js.org/configuration/dev-server/)
+to use the certificates we just generated.
+
+While I can't share the exact script I wrote, I hope the findings here saves someone else in the future - I wasn't fully aware of
+exactly how locked down browsers are in regards to cookies. Having read some documentation in the past I knew `SameSite` was a cookie
+option, but if it has a use this isn't it. If you set `SameSite=true` most modern browsers will just block the cookies.
+
+----
+
+I sincerely hope you learned something from this, and if you have any suggestions, comments, or corrections, you can find my Twitter below.
+
+----
+
+> ##
+
+>Thanks for reading! For more content, or for any questions or comments, please reach out to me via [Twitter](https://twitter.com/porter_kalob)
