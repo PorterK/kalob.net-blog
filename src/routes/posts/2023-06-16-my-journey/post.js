@@ -1,9 +1,9 @@
 import TwitterCard from "./twitter-card.png";
 
 export default {
-  title: "Senior Dev Teams",
+  title: "My Journey to Software Engineer",
   tags: ["brain dump"],
-  spoiler: "What I've learned from working with lots of senior developers",
+  spoiler: "How I got to where I am today",
   cardImage: TwitterCard,
   getContent: () => import("./document.mdx"),
 };
